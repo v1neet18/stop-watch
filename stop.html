@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Bai+Jamjuree:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
+
+    *{
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Bai Jamjuree", sans-serif;
+    }
+
+    html, body{
+      width: 100%;
+    }
+
+    body{
+      background-color: #333;
+      color: white;
+      position: relative;
+    }
+
+    .stopwatch{
+      background-color: royalblue;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-block: 2rem 4rem;
+      border-radius: 0 0 60px 60px;
+      box-shadow: 5px 10px 20px rgba(65, 105, 225, .5);
+      position: absolute;
+      top: -500px;
+      left: 0;
+      right: 0;
+      transition: top .4s ease-in;
+    }
+
+    .load{
+      top: 0;
+    }
+
+    .timer-box{
+      border: 8px solid white;
+      width: 80%;
+      max-width: 280px;
+      aspect-ratio: 1/1;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-size: 1.25rem;
+      font-weight: 900;
+      background-image: linear-gradient(rgba(0,0,0,.3), rgba(0,0,0,.3)) ,url('https://img.freepik.com/free-photo/painting-mountain-lake-with-mountain-background_188544-9126.jpg');
+      box-shadow: 0 0 20px rgba(0,0,0,.6);
+    }
+
+    .button-container{
+      margin-top: 1rem;
+      display: flex;
+      gap: .5rem;
+    }
+
+    .button-container button{
+      background-color: #fff;
+      width: 100px;
+      border-radius: 999px;
+      border: none;
+      font-weight: bold;
+      font-size: .9rem;
+      cursor: pointer;
+      padding-block: .35rem;
+      box-shadow: 1px 5px 20px rgba(0,0,0,.6);
+    }
+
+    .button-container button:hover{
+      background-color: transparent;
+      outline: 1px solid white;
+      color: white;
+    }
+
+    .button-container button:active{
+      background-color: rgba(255,255,255,0.8);
+      color: black;
+
+    }
+
+
+  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div class="stopwatch">
+    <div class="timer-box"><h1>00 : 00 : 00</h1></div>
+    <div class="button-container">
+      <button class="start-btn">Start</button>
+      <button class="reset-btn">Reset</button>
+    </div>
+  </div>
+
+
+
+
+  <script>
+    const timerDiv = document.querySelector('.timer-box');
+    const startBtn = document.querySelector('.start-btn');
+    const resetBtn = document.querySelector('.reset-btn');
+    const stopWatch = document.querySelector('.stopwatch');
+    let timerSec = 0;
+    let timerMin = 0;
+    let timerHr = 0;
+    let isRunning = false;
+    let intervalId;
+
+    window.addEventListener('load',() => {
+      stopWatch.classList.add('load');
+    })
+    startBtn.addEventListener('click', () => {
+      react();
+    })
+
+    function react() {
+      if(!isRunning){
+        intervalId = setInterval(runTimer,1000);
+        startBtn.innerText = 'Stop';
+        isRunning = true;
+      } else{
+        clearInterval(intervalId);
+        startBtn.innerText = 'Start';
+        isRunning = false;
+      }
+    }
+
+    function runTimer() {
+      timerSec++;
+        if(timerSec === 60){
+          timerSec = 0;
+          timerMin++;
+        }
+        timerDiv.innerHTML = `
+        <h1>
+        ${timerHr.toString().padStart(2, '0')} : ${timerMin.toString().padStart(2, '0')} : ${timerSec.toString().padStart(2, '0')}
+         </h1> 
+        `
+    }
+
+    resetBtn.addEventListener('click', () => {
+      reset();
+      react();
+    });
+
+    function reset() {
+      timerSec = 0;
+      timerMin = 0;
+      timerHr = 0;
+      isRunning = true;
+
+      timerDiv.innerHTML = `
+        <h1>
+        ${timerHr.toString().padStart(2, '0')} : ${timerMin.toString().padStart(2, '0')} : ${timerSec.toString().padStart(2, '0')}
+         </h1> 
+        `
+    }
+  </script>
+</body>
+</html>
